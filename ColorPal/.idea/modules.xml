@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ColorPal.iml" filepath="$PROJECT_DIR$/ColorPal.iml" />
+      <module fileurl="file://C:\Users\cyin7\OneDrive\Documents\GitHub\tsaSoftDev_17-18\ColorPal\ColorPal.iml" filepath="C:\Users\cyin7\OneDrive\Documents\GitHub\tsaSoftDev_17-18\ColorPal\ColorPal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\cyin7\OneDrive\Documents\GitHub\tsaSoftDev_17-18\ColorPal\app\app.iml" filepath="C:\Users\cyin7\OneDrive\Documents\GitHub\tsaSoftDev_17-18\ColorPal\app\app.iml" />
     </modules>
   </component>
 </project>
