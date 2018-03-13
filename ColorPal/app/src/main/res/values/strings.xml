@@ -10,4 +10,5 @@
     <string name="instructionTitle">Instructions</string>
     <string name="instructionContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin luctus tortor erat, at pretium libero vulputate eget. Nullam luctus eu ante sit amet hendrerit. Fusce et maximus nulla. Mauris pellentesque lacus non elementum fringilla. Curabitur consequat nulla a malesuada convallis. Etiam sed elit nisl. </string>
     <string name="insertButtonName">I don't know where this button goes pls edit me</string>
+    <string name="before">Before</string>
 </resources>
