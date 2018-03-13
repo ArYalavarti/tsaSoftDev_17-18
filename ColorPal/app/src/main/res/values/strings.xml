@@ -2,4 +2,8 @@
     <string name="app_name">ColorPal</string>
     <string name="diagButton">Take Diagnostic</string>
     <string name="imgAnalysis">Image Analysis</string>
+    <string name="restitle">Results</string>
+    <string name="resContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at dui scelerisque, laoreet dolor sit amet, dignissim risus. Sed porttitor varius pulvinar. Suspendisse pharetra id lectus a euismod. Integer tincidunt ullamcorper neque, at auctor nibh varius vel. Ut lobortis eros id tellus facilisis, ac dignissim augue rutrum. Nulla facilisi. Ut hendrerit sagittis venenatis. Praesent in ante in ligula imperdiet semper. Morbi consectetur neque quis lectus lacinia, tristique tincidunt nisi suscipit. </string>
+    <string name="uploadButton">Export Results</string>
+    <string name="camButton">Test Camera</string>
 </resources>
