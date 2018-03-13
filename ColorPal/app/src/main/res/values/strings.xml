@@ -2,4 +2,5 @@
     <string name="app_name">ColorPal</string>
     <string name="diagButton">Take Diagnostic</string>
     <string name="imgAnalysis">Image Analysis</string>
+    <string name="next">Next</string>
 </resources>

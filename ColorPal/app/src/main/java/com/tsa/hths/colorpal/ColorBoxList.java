@@ -20,6 +20,18 @@ public class ColorBoxList {
         }
     }
 
+    public void setColors(ArrayList<Integer> colors)
+    {
+        mOrigColors.clear();
+        mColors.clear();
+
+        for(Integer i : colors)
+        {
+            mOrigColors.add(i);
+            mColors.add(i);
+        }
+    }
+
     public void handleClick(int pos)
     {
         if(mLastClicked == -1)
@@ -38,6 +50,11 @@ public class ColorBoxList {
         int temp = mColors.get(a);
         mColors.set(a, mColors.get(b));
         mColors.set(b, temp);
+    }
+
+    public int getScore()
+    {
+        return 5;
     }
 
     public int getColorAtPos(int pos)

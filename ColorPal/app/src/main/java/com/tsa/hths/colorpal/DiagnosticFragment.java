@@ -10,13 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
 public class DiagnosticFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
+    private Button mNextButton;
+
     private ColorBoxList mColorBoxList;
+
+    private int mRound = 0;
+    private int[] mResults = new int[4];
+
+    public static DiagnosticFragment getInstance()
+    {
+        return new DiagnosticFragment();
+    }
 
     private class ColorBoxViewHolder extends RecyclerView.ViewHolder
     {
@@ -72,10 +83,6 @@ public class DiagnosticFragment extends Fragment {
         }
     }
 
-    public static DiagnosticFragment getInstance()
-    {
-        return new DiagnosticFragment();
-    }
 
     @Nullable
     @Override
@@ -94,6 +101,15 @@ public class DiagnosticFragment extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(new ColorBoxAdapter(mColorBoxList));
 
+        mNextButton = (Button) v.findViewById(R.id.diagnostic_test_next_button);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mResults[mRound++] = mColorBoxList.getScore();
+                mColorBoxList.setColors(DiagnosticTestColorData.getColorsForRound(mRound));
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
 
 
         return v;
