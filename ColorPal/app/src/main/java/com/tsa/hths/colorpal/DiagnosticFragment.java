@@ -36,14 +36,13 @@ public class DiagnosticFragment extends Fragment {
 
         public ColorBoxViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
+            mView = itemView.findViewById(R.id.color_box_view);
             mPos = 0;
 
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mColorBoxList.handleClick(mPos);
-                    mView.setSelected(true);
                     mRecyclerView.getAdapter().notifyDataSetChanged();
                 }
             });
@@ -89,16 +88,10 @@ public class DiagnosticFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.diagnostic_test_fragment_layout, container, false);
 
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.RED);
-        colors.add(Color.GREEN);
-        colors.add(Color.BLUE);
-        colors.add(Color.YELLOW);
-        colors.add(Color.CYAN);
-        mColorBoxList = new ColorBoxList(colors);
+        mColorBoxList = new ColorBoxList(DiagnosticTestColorData.getColorsForRound(mRound, getActivity()));
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.diagnostic_recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         mRecyclerView.setAdapter(new ColorBoxAdapter(mColorBoxList));
 
         mNextButton = (Button) v.findViewById(R.id.diagnostic_test_next_button);
@@ -106,7 +99,7 @@ public class DiagnosticFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mResults[mRound++] = mColorBoxList.getScore();
-                mColorBoxList.setColors(DiagnosticTestColorData.getColorsForRound(mRound));
+                mColorBoxList.setColors(DiagnosticTestColorData.getColorsForRound(mRound, getActivity()));
                 mRecyclerView.getAdapter().notifyDataSetChanged();
             }
         });
