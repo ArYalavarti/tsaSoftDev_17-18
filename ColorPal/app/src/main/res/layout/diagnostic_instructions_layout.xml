@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/instructionTitle"
+        android:text="@string/instructions"
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:textSize="30sp"/>
@@ -14,15 +14,15 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/instructionContent"
+        android:text="@string/diagnostic_test_instructions"
         android:padding="30dp"
         android:textSize="16sp"/>
 
-    <Button
+    <Button android:id="@+id/diagnostic_instructions_start_test_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/insertButtonName"
+        android:text="@string/startTest"
         android:layout_gravity="center_horizontal|center"/>
 
 </LinearLayout>

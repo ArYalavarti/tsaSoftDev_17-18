@@ -2,6 +2,7 @@ package com.tsa.hths.colorpal;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
+import android.content.SharedPreferences;
+import android.content.Context;
+import android.content.Intent;
 
 import java.util.ArrayList;
 
@@ -89,6 +93,7 @@ public class DiagnosticFragment extends Fragment {
         View v = inflater.inflate(R.layout.diagnostic_test_fragment_layout, container, false);
 
         mColorBoxList = new ColorBoxList(DiagnosticTestColorData.getColorsForRound(mRound, getActivity()));
+        mColorBoxList.shuffleColors();
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.diagnostic_recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
@@ -99,8 +104,23 @@ public class DiagnosticFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mResults[mRound++] = mColorBoxList.getScore();
-                mColorBoxList.setColors(DiagnosticTestColorData.getColorsForRound(mRound, getActivity()));
-                mRecyclerView.getAdapter().notifyDataSetChanged();
+                Log.d("DIAG_RESULTS", "" + mColorBoxList.getScore());
+
+                if(mRound > 3) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_1), mResults[0]).apply();
+                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_2), mResults[1]).apply();
+                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_3), mResults[2]).apply();
+                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_4), mResults[3]).apply();
+
+                    Intent i = new Intent(getActivity(), DiagnosticResultsActivity.class);
+                    startActivity(i);
+                }
+                else {
+                    mColorBoxList.setColors(DiagnosticTestColorData.getColorsForRound(mRound, getActivity()));
+                    mColorBoxList.shuffleColors();
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                }
             }
         });
 

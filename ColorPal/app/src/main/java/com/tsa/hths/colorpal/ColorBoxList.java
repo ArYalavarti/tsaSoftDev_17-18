@@ -1,6 +1,7 @@
 package com.tsa.hths.colorpal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ColorBoxList {
     private ArrayList<Integer> mOrigColors;
@@ -45,6 +46,11 @@ public class ColorBoxList {
         }
     }
 
+    public void shuffleColors()
+    {
+        Collections.shuffle(mColors);
+    }
+
     public void swap(int a, int b)
     {
         int temp = mColors.get(a);
@@ -54,7 +60,12 @@ public class ColorBoxList {
 
     public int getScore()
     {
-        return 5;
+        int score = 0;
+        for(Integer i : mColors)
+        {
+            score += Math.pow(mColors.indexOf(i) - mOrigColors.indexOf(i), 2);
+        }
+        return score;
     }
 
     public int getColorAtPos(int pos)

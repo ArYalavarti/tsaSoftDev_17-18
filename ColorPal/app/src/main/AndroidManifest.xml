@@ -11,13 +11,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DiagnosticActivity">
+        <activity android:name=".TitlePageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".DiagnosticInstructionsActivity"></activity>
+        <activity android:name=".DiagnosticActivity"></activity>
+        <activity android:name=".DiagnosticResultsActivity"></activity>
+
         <activity android:name=".FilterScreen">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->

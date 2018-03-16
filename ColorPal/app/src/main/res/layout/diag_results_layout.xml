@@ -14,8 +14,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/resContent"
+        android:textSize="18sp"
+        android:text="@string/diagnostic_test_results_text_view_text"
+        android:gravity="center"
+        android:padding="30dp"/>
+
+    <TextView android:id="@+id/diagnostic_test_results_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center"
         android:padding="30dp"/>
 
     <LinearLayout
