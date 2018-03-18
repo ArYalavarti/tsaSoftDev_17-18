@@ -18,23 +18,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".DiagnosticInstructionsActivity"></activity>
-        <activity android:name=".DiagnosticActivity"></activity>
-        <activity android:name=".DiagnosticResultsActivity"></activity>
-
+        <activity android:name=".DiagnosticInstructionsActivity" />
+        <activity android:name=".DiagnosticActivity" />
+        <activity android:name=".DiagnosticResultsActivity" />
         <activity android:name=".FilterScreen">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <service
             android:name=".OverlayService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".CameraResult"></activity>
     </application>
 
 </manifest>
