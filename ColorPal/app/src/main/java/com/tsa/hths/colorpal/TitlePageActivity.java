@@ -8,12 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class TitlePageActivity extends FragmentActivity {
 
     private Button mDiagnosticTestButton;
-    private Button mAnalyzeImageButton;
+    private ImageButton mHelpButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +33,13 @@ public class TitlePageActivity extends FragmentActivity {
             }
         });
 
-        mAnalyzeImageButton = (Button) findViewById(R.id.title_page_analysis_button);
+        mHelpButton = (ImageButton) findViewById(R.id.help_button);
+        mHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InstructionsDialog dialog = new InstructionsDialog();
+                dialog.show(getSupportFragmentManager(), "DIALOG");
+            }
+        });
     }
 }

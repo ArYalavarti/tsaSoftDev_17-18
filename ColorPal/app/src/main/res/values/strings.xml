@@ -6,10 +6,26 @@
     <string name="resContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at dui scelerisque, laoreet dolor sit amet, dignissim risus. Sed porttitor varius pulvinar. Suspendisse pharetra id lectus a euismod. Integer tincidunt ullamcorper neque, at auctor nibh varius vel. Ut lobortis eros id tellus facilisis, ac dignissim augue rutrum. Nulla facilisi. Ut hendrerit sagittis venenatis. Praesent in ante in ligula imperdiet semper. Morbi consectetur neque quis lectus lacinia, tristique tincidunt nisi suscipit. </string>
     <string name="uploadButton">Export Results</string>
     <string name="camButton">Test Camera</string>
+    <string name="return_home_button">Return Home</string>
     <string name="next">Next</string>
     <string name="startTest">Start Test</string>
     <string name="before">Before</string>
     <string name="instructions">Instructions</string>
+    <string name="OK">OK</string>
+    <string name="camera">Camera</string>
+    <string name="photos">Photos</string>
+
+    <string name="general_app_instructions">
+        Press the “Diagnostic Test” button to take a test that will determine your color blindness.  This will then tell
+        you which color filter you should apply.
+
+        \n\nPress the “Camera” button and take a picture of the real world.  The app will automatically apply the appropriate
+        color filter.  Swipe left and right to view the original image or the color-filtered image.
+
+        \n\nPress the “Photos” button to browse through images currently on your phone.  Once an image is selected, the app
+        will automatically apply the appropriate color filter.  Swipe left and right to view the original image or the
+        color-filtered image.
+    </string>
 
     <string name="diagnostic_test_instructions">
         The F-M 100 color test consists of 4 screens each with 22 different color plates.  On each screen, colored

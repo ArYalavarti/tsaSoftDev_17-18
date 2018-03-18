@@ -1,17 +1,19 @@
 package com.tsa.hths.colorpal;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 
-public class DiagnosticResultsActivity extends FragmentActivity {
+public class DiagnosticResultsActivity extends AppCompatActivity {
 
     private TextView mResultsTextView;
+    private Button mReturnHomeButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,6 +22,15 @@ public class DiagnosticResultsActivity extends FragmentActivity {
 
         mResultsTextView = (TextView) findViewById(R.id.diagnostic_test_results_text_view);
         mResultsTextView.setText(getResultsString());
+
+        mReturnHomeButton = (Button) findViewById(R.id.diagnostic_test_results_return_home_button);
+        mReturnHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DiagnosticResultsActivity.this, TitlePageActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private String getResultsString()

@@ -35,7 +35,12 @@ public class ColorBoxList {
 
     public void handleClick(int pos)
     {
-        if(mLastClicked == -1)
+        if(pos == 0 || pos == mColors.size() - 1)
+        {
+            mLastClicked = -1; // reset
+            return;
+        }
+        else if(mLastClicked == -1)
         {
             mLastClicked = pos;
         }
@@ -48,7 +53,7 @@ public class ColorBoxList {
 
     public void shuffleColors()
     {
-        Collections.shuffle(mColors);
+        Collections.shuffle(mColors.subList(1, mColors.size() - 1)); // do not include first and last elements in shuffle
     }
 
     public void swap(int a, int b)
