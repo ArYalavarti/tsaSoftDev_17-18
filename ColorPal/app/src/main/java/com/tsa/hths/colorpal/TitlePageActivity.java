@@ -12,6 +12,7 @@ public class TitlePageActivity extends FragmentActivity {
 
     private Button mDiagnosticTestButton;
     private Button mCamera;
+    private Button mPhoto;
     private ImageButton mHelpButton;
 
     @Override
@@ -36,6 +37,17 @@ public class TitlePageActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TitlePageActivity.this, CameraResult.class);
+                i.putExtra("type","camera");
+                startActivity(i);
+            }
+        });
+
+        mPhoto = (Button) findViewById(R.id.title_page_photos_button);
+        mPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TitlePageActivity.this, CameraResult.class);
+                i.putExtra("type","gallery");
                 startActivity(i);
             }
         });
