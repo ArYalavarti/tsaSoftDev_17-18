@@ -4,38 +4,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:cropToPadding="false"
-        android:paddingTop="75dp"
-        android:paddingBottom="75dp"
-        android:scaleX="3"
-        android:scaleY="3"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="20dp"
+        android:paddingBottom="0dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:maxWidth="250dp"
+        android:maxHeight="250dp"
+        android:id="@+id/app_logo"
+        android:src="@drawable/logo"
+        android:layout_gravity="center"
         app:srcCompat="@mipmap/ic_launcher" />
 
     <Button
         android:id="@+id/title_page_diagnostic_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
+        android:textColor="@color/buttonText"
+        android:background="@drawable/rounded_button"
         android:text="@string/diagButton"/>
 
     <Button
         android:id="@+id/title_page_analysis_button"
         android:layout_width="200dp"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="@color/buttonText"
+        android:background="@drawable/rounded_button"
+        android:bottomRightRadius="100dp"
+        android:bottomLeftRadius="100dp"
+        android:topLeftRadius="100dp"
+        android:topRightRadius="100dp"
         android:text="@string/imgAnalysis" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/help_button"
+        android:src="@drawable/info"
         app:srcCompat="@mipmap/ic_launcher"
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
+        android:background="@null"
         android:layout_gravity="end"/>
 </LinearLayout>

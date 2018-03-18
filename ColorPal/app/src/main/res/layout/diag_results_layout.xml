@@ -38,6 +38,9 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
+            android:textColor="@color/buttonText"
+            android:background="@drawable/rounded_button"
+            android:layout_marginBottom="10dp"
             android:text="@string/camButton" />
 
         <Button
@@ -45,6 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
             android:text="@string/uploadButton"
+            android:textColor="@color/buttonText"
+            android:background="@drawable/rounded_button"
             android:layout_marginBottom="30dp"/>
 
     </LinearLayout>

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#253b5b</color>
+    <color name="colorPrimaryDark">#253b5b</color>
+    <color name="colorAccent">#E95455</color>
+
+    <color name="buttonStart">#4e5f7a</color>
+    <color name="buttonEnd">#687fa3</color>
+    <color name="buttonText">#eaf0ff</color>
+
 
     <color name="diag_1a">#AF7871</color>
     <color name="diag_1b">#B57571</color>
@@ -42,17 +47,17 @@
     <color name="diag_2m">#659D74</color>
     <color name="diag_2n">#638E6D</color>
     <color name="diag_2o">#619B76</color>
-    <color name="diag_2p">#FF0000</color>
+    <color name="diag_2p">#589E76</color>
     <color name="diag_2q">#54997A</color>
     <color name="diag_2r">#559B83</color>
-    <color name="diag_2s">#FF0000</color>
+    <color name="diag_2s">#589E87</color>
     <color name="diag_2t">#49A283</color>
-    <color name="diag_2u">#FF0000</color>
+    <color name="diag_2u">#519E89</color>
     <color name="diag_2v">#57A189</color>
 
     <color name="diag_3a">#57A189</color>
     <color name="diag_3b">#4E9C84</color>
-    <color name="diag_3c">#FF0000</color>
+    <color name="diag_3c">#569E91</color>
     <color name="diag_3d">#429682</color>
     <color name="diag_3e">#4EAA97</color>
     <color name="diag_3f">#419B94</color>

@@ -23,6 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/startTest"
+        android:textColor="@color/buttonText"
+        android:background="@drawable/rounded_button"
         android:layout_gravity="center_horizontal|center"/>
 
 </LinearLayout>
