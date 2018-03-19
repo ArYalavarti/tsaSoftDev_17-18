@@ -11,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ImageFragment extends Fragment {
 
 
@@ -27,8 +23,6 @@ public class ImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_image, container, false);
         ImageView  imageView = (ImageView) v.findViewById(R.id.result_image);
-
-        Log.e("ar", String.valueOf(getArguments().getByteArray("image")));
 
         byte[] byteArray = getArguments().getByteArray("image");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);

@@ -17,13 +17,14 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResultImagesActivity extends FragmentActivity {
+
+    public final static int RESOLUTION = 200;
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -130,17 +131,11 @@ public class ResultImagesActivity extends FragmentActivity {
     }
 
     private Bitmap processImage(Bitmap originalImage, Boolean filter) {
-        int nh = (int) (originalImage.getHeight() * (100.0 / originalImage.getWidth()));
-        Bitmap image = Bitmap.createScaledBitmap(originalImage, 100, nh, true);
+        int nh = (int) (originalImage.getHeight() * ( ((double) RESOLUTION) / originalImage.getWidth()));
+        Bitmap image = Bitmap.createScaledBitmap(originalImage, RESOLUTION, nh, true);
         if (filter) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                for (int y = 0; y < image.getHeight(); y++) {
-                    int color = image.getPixel(x, y);
-//                Log.i("color", color + "");
-                    color *= 2;
-                    image.setPixel(x, y, color);
-                }
-            }
+            ImageFilter filterer = new ImageFilter();
+            image = filterer.filterImage(image);
         }
         return image;
     }
