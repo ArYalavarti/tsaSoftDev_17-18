@@ -5,10 +5,21 @@
     android:orientation="vertical"
     android:background="@android:color/black">
 
-    <View android:id="@+id/color_box_view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="5dp"
-        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:id="@+id/color_box_linear_layout"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingRight="5dp"
+        android:background="@android:color/black">
+
+        <View android:id="@+id/color_box_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:background="@color/colorPrimary"/>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -36,8 +36,7 @@
 
     <string name="diagnostic_test_results_text_view_text">Your diagnostic test results:</string>
 
-    <string name="diagnostic_test_results_1">dg_results1</string>
-    <string name="diagnostic_test_results_2">dg_results2</string>
-    <string name="diagnostic_test_results_3">dg_results3</string>
-    <string name="diagnostic_test_results_4">dg_results4</string>
+    <string name="red_error">red_error</string>
+    <string name="green_error">green_error</string>
+    <string name="blue_error">blue_error</string>
 </resources>
