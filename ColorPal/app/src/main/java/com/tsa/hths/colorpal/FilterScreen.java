@@ -14,6 +14,7 @@ public class FilterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_screen);
         toggleService();
+        this.onBackPressed();
     }
 
     private void toggleService(){

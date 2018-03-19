@@ -1,17 +1,27 @@
 package com.tsa.hths.colorpal;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResultImagesActivity extends FragmentActivity {
 
@@ -27,13 +37,9 @@ public class ResultImagesActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_images);
 
-        mOriginalImage = getIntent().getByteArrayExtra("originalImage");
-        mProcessedImage = getIntent().getByteArrayExtra("processedImage");
+        getImages();
 
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(1);
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
@@ -67,6 +73,99 @@ public class ResultImagesActivity extends FragmentActivity {
         public int getCount() {
             return 2;
         }
+    }
+
+    private static final int REQUEST_CODE_SOME_FEATURES_PERMISSIONS = 101;
+    private static final int CAMERA_PIC_REQUEST = 000;
+    private static final int RESULT_LOAD_IMAGE = 111;
+
+    private void getImages() {
+        String type = getIntent().getExtras().getString("type");
+        if (type.equals("camera")) {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+        } else if (type.equals("gallery")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                int hasReadPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+                List<String> permissions = new ArrayList<String>();
+                if (hasReadPermission != PackageManager.PERMISSION_GRANTED) {
+                    permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
+
+                if (!permissions.isEmpty()) {
+                    requestPermissions(permissions.toArray(new String[permissions.size()]), REQUEST_CODE_SOME_FEATURES_PERMISSIONS);
+                }
+            }
+            Intent intent = new Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, RESULT_LOAD_IMAGE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            this.onBackPressed();
+            return;
+        }
+        if (requestCode == CAMERA_PIC_REQUEST) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            processResults(image);
+        } else if (requestCode == RESULT_LOAD_IMAGE) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap image = BitmapFactory.decodeFile(picturePath);
+            processResults(image);
+        }
+    }
+
+    private Bitmap processImage(Bitmap originalImage, Boolean filter) {
+        int nh = (int) (originalImage.getHeight() * (100.0 / originalImage.getWidth()));
+        Bitmap image = Bitmap.createScaledBitmap(originalImage, 100, nh, true);
+        if (filter) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    int color = image.getPixel(x, y);
+//                Log.i("color", color + "");
+                    color *= 2;
+                    image.setPixel(x, y, color);
+                }
+            }
+        }
+        return image;
+    }
+
+    private void processResults(Bitmap image) {
+        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+        processImage(image, false).compress(Bitmap.CompressFormat.PNG, 100, stream1);
+        byte[] byteArray1 = stream1.toByteArray();
+
+        ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
+        processImage(image, true).compress(Bitmap.CompressFormat.PNG, 100, stream2);
+        byte[] byteArray2 = stream2.toByteArray();
+
+        mOriginalImage = byteArray1;
+        mProcessedImage = byteArray2;
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ResultImagesActivity.this, TitlePageActivity.class));
     }
 }
 

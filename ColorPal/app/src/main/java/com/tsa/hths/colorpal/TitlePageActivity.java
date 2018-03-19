@@ -36,7 +36,7 @@ public class TitlePageActivity extends FragmentActivity {
         mCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TitlePageActivity.this, CameraResult.class);
+                Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
                 i.putExtra("type","camera");
                 startActivity(i);
             }
@@ -46,7 +46,7 @@ public class TitlePageActivity extends FragmentActivity {
         mPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TitlePageActivity.this, CameraResult.class);
+                Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
                 i.putExtra("type","gallery");
                 startActivity(i);
             }
@@ -60,5 +60,15 @@ public class TitlePageActivity extends FragmentActivity {
                 dialog.show(getSupportFragmentManager(), "DIALOG");
             }
         });
+        mHelpButton.setOnLongClickListener(new View.OnLongClickListener() { //this is just for testing we should probably take this out
+            @Override
+            public boolean onLongClick(View view) {
+                startActivity(new Intent(TitlePageActivity.this, FilterScreen.class));
+                return true;
+            }
+        });
     }
+
+    @Override
+    public void onBackPressed() {}
 }
