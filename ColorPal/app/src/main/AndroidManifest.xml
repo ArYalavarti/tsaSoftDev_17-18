@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TitlePageActivity">
+        <activity android:name=".TitlePageActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,9 +24,14 @@
         <activity android:name=".DiagnosticResultsActivity" />
         <activity android:name=".FilterScreen">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <activity android:name=".DiagnosticInstructionsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".DiagnosticActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".DiagnosticResultsActivity" android:screenOrientation="portrait"></activity>
 
+        <activity android:name=".FilterScreen" android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+            
 
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->

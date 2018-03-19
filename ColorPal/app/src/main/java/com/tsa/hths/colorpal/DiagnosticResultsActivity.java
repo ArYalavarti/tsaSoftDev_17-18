@@ -2,10 +2,12 @@ package com.tsa.hths.colorpal;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
@@ -35,13 +37,44 @@ public class DiagnosticResultsActivity extends AppCompatActivity {
 
     private String getResultsString()
     {
+        String result = ColorBlindnessCalc.getColorBlindness(this);
+
+        String out = "";
+
+        if(result.equals(ColorBlindnessCalc.RED))
+        {
+            out += "Protanomaly (RED)";
+        }
+        else if(result.equals(ColorBlindnessCalc.GREEN))
+        {
+            out += "Deuteranomaly (GREEN)";
+        }
+        else if(result.equals(ColorBlindnessCalc.BLUE))
+        {
+            out += "Tritanomaly (BLUE)";
+        }
+        else if(result.equals(ColorBlindnessCalc.FULL))
+        {
+            out += "Fully color blind";
+        }
+        else
+        {
+            out += "Not color blind";
+        }
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        int result1 = sp.getInt(getResources().getString(R.string.diagnostic_test_results_1), 0);
-        int result2 = sp.getInt(getResources().getString(R.string.diagnostic_test_results_2), 0);
-        int result3 = sp.getInt(getResources().getString(R.string.diagnostic_test_results_3), 0);
-        int result4 = sp.getInt(getResources().getString(R.string.diagnostic_test_results_4), 0);
+        int redError = sp.getInt(getResources().getString(R.string.red_error), 0);
+        int greenError = sp.getInt(getResources().getString(R.string.green_error), 0);
+        int blueError = sp.getInt(getResources().getString(R.string.blue_error), 0);
 
-        return "" + result1 + "\n" + result2 + "\n" + result3 + "\n" + result4;
+        Log.e("COLOR ERRORS", "RED: " + redError);
+
+        double redPercent = 100.0 * redError / (redError + greenError + blueError);
+        double greenPercent = 100.0 * greenError / (redError + greenError + blueError);
+        double bluePercent = 100.0 * blueError / (redError + greenError + blueError);
+
+        out += ("\nR: " + redPercent + "%, G: " + greenPercent + "%, B: " + bluePercent + "%");
+        return out;
     }
 }

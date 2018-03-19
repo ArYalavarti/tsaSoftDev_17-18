@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,6 @@ public class DiagnosticFragment extends Fragment {
     private ColorBoxList mColorBoxList;
 
     private int mRound = 0;
-    private int[] mResults = new int[4];
 
     public static DiagnosticFragment getInstance()
     {
@@ -36,11 +36,13 @@ public class DiagnosticFragment extends Fragment {
     private class ColorBoxViewHolder extends RecyclerView.ViewHolder
     {
         private View mView;
+        private LinearLayout mLinLayout;
         private int mPos;
 
         public ColorBoxViewHolder(View itemView) {
             super(itemView);
             mView = itemView.findViewById(R.id.color_box_view);
+            mLinLayout = itemView.findViewById(R.id.color_box_linear_layout);
             mPos = 0;
 
             mView.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,14 @@ public class DiagnosticFragment extends Fragment {
         {
             mPos = pos;
             mView.setBackgroundColor(color);
+            if(mColorBoxList.getLastClicked() != -1 && mPos == mColorBoxList.getLastClicked())
+            {
+                mLinLayout.setBackgroundColor(Color.WHITE);
+            }
+            else
+            {
+                mLinLayout.setBackgroundColor(Color.BLACK);
+            }
         }
     }
 
@@ -96,22 +106,23 @@ public class DiagnosticFragment extends Fragment {
         mColorBoxList.shuffleColors();
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.diagnostic_recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mRecyclerView.setAdapter(new ColorBoxAdapter(mColorBoxList));
 
         mNextButton = (Button) v.findViewById(R.id.diagnostic_test_next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mResults[mRound++] = mColorBoxList.getScore();
-                Log.d("DIAG_RESULTS", "" + mColorBoxList.getScore());
+                mColorBoxList.addErrors();
+                mRound++;
 
                 if(mRound > 3) {
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_1), mResults[0]).apply();
-                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_2), mResults[1]).apply();
-                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_3), mResults[2]).apply();
-                    sp.edit().putInt(getResources().getString(R.string.diagnostic_test_results_4), mResults[3]).apply();
+                    sp.edit().putInt(getResources().getString(R.string.red_error), mColorBoxList.getRedError()).apply();
+                    sp.edit().putInt(getResources().getString(R.string.green_error), mColorBoxList.getGreenError()).apply();
+                    sp.edit().putInt(getResources().getString(R.string.blue_error), mColorBoxList.getBlueError()).apply();
+
+                    Log.e("COLOR ERRORS", "RED: " + mColorBoxList.getRedError());
 
                     Intent i = new Intent(getActivity(), DiagnosticResultsActivity.class);
                     startActivity(i);
