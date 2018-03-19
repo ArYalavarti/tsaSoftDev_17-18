@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DiagnosticInstructionsActivity" />
+        <activity android:name=".DiagnosticActivity" />
+        <activity android:name=".DiagnosticResultsActivity" />
+        <activity android:name=".FilterScreen">
 
         <activity android:name=".DiagnosticInstructionsActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".DiagnosticActivity" android:screenOrientation="portrait"></activity>
@@ -26,15 +31,18 @@
         <activity android:name=".FilterScreen" android:screenOrientation="portrait">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
+            
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <service
             android:name=".OverlayService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".CameraResult"></activity>
     </application>
 
 </manifest>
