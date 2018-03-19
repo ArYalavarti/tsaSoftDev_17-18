@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class CameraResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_result);
+
+//        startActivity(new Intent(CameraResult.this, ResultImagesActivity.class));
+
         String type = getIntent().getExtras().getString("type");
         if (type.equals("camera")) {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -53,9 +57,10 @@ public class CameraResult extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_PIC_REQUEST) {
             Bitmap image = (Bitmap) data.getExtras().get("data");
-            image = processImage(image);
-            ImageView imageview = (ImageView) findViewById(R.id.camera_result_image); //sets imageview as the bitmap
-            imageview.setImageBitmap(image);
+//            image = processImage(image);
+            showResults(image);
+//            ImageView imageview = (ImageView) findViewById(R.id.camera_result_image); //sets imageview as the bitmap
+//            imageview.setImageBitmap(image);
         } else if (requestCode == RESULT_LOAD_IMAGE) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -73,22 +78,41 @@ public class CameraResult extends AppCompatActivity {
             Bitmap image = BitmapFactory.decodeFile(picturePath);
 //            int nh = (int) (image.getHeight() * (512.0 / image.getWidth()));
 //            Bitmap scaledImage = Bitmap.createScaledBitmap(image, 512, nh, true);
-            image = processImage(image);
-            imageView.setImageBitmap(image);
+//            image = processImage(image);
+//            imageView.setImageBitmap(image);
+            showResults(image);
         }
     }
 
-    private Bitmap processImage(Bitmap originalImage) {
+    private Bitmap processImage(Bitmap originalImage, Boolean filter) {
         int nh = (int) (originalImage.getHeight() * (100.0 / originalImage.getWidth()));
         Bitmap image = Bitmap.createScaledBitmap(originalImage, 100, nh, true);
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                int color = image.getPixel(x,y);
+        if (filter) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    int color = image.getPixel(x, y);
 //                Log.i("color", color + "");
-                color *= 2;
-                image.setPixel(x,y,color);
+                    color *= 2;
+                    image.setPixel(x, y, color);
+                }
             }
         }
         return image;
+    }
+
+    private void showResults(Bitmap image) {
+        Intent i = new Intent(CameraResult.this, ResultImagesActivity.class);
+
+        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+        processImage(image, false).compress(Bitmap.CompressFormat.PNG, 100, stream1);
+        byte[] byteArray1 = stream1.toByteArray();
+        i.putExtra("originalImage", byteArray1);
+
+        ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
+        processImage(image, true).compress(Bitmap.CompressFormat.PNG, 100, stream2);
+        byte[] byteArray2 = stream2.toByteArray();
+        i.putExtra("processedImage", byteArray2);
+
+        startActivity(i);
     }
 }

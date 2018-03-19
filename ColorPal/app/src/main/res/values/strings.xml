@@ -40,4 +40,7 @@
     <string name="diagnostic_test_results_2">dg_results2</string>
     <string name="diagnostic_test_results_3">dg_results3</string>
     <string name="diagnostic_test_results_4">dg_results4</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

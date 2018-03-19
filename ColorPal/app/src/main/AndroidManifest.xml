@@ -37,7 +37,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".CameraResult"></activity>
+        <activity android:name=".CameraResult" />
+        <activity android:name=".ResultImagesActivity"></activity>
     </application>
 
 </manifest>
