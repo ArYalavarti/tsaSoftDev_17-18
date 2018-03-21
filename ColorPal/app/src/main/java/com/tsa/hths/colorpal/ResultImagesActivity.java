@@ -17,6 +17,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -156,6 +159,25 @@ public class ResultImagesActivity extends FragmentActivity {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(1);
+
+        mPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    float x = motionEvent.getX();
+                    float y = motionEvent.getY();
+
+                    Toast.makeText(ResultImagesActivity.this, "" + x + ","+ y,Toast.LENGTH_LONG).show();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        });
     }
 
     @Override

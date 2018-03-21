@@ -68,13 +68,13 @@ public class DiagnosticResultsActivity extends AppCompatActivity {
         int greenError = sp.getInt(getResources().getString(R.string.green_error), 0);
         int blueError = sp.getInt(getResources().getString(R.string.blue_error), 0);
 
-        Log.e("COLOR ERRORS", "RED: " + redError);
+        Log.e("COLOR_ERRORS", "RED: " + redError + " GREEN: " + greenError + " BLUE: " + blueError);
 
-        double redPercent = 100.0 * redError / (redError + greenError + blueError);
-        double greenPercent = 100.0 * greenError / (redError + greenError + blueError);
-        double bluePercent = 100.0 * blueError / (redError + greenError + blueError);
+        //double redPercent = 100.0 * redError / (redError + greenError + blueError);
+        //double greenPercent = 100.0 * greenError / (redError + greenError + blueError);
+        //double bluePercent = 100.0 * blueError / (redError + greenError + blueError);
 
-        out += ("\nR: " + redPercent + "%, G: " + greenPercent + "%, B: " + bluePercent + "%");
+        //out += ("\nR: " + redPercent + "%, G: " + greenPercent + "%, B: " + bluePercent + "%");
         return out;
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class TitlePageActivity extends FragmentActivity {
 
@@ -36,9 +37,16 @@ public class TitlePageActivity extends FragmentActivity {
         mCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
-                i.putExtra("type","camera");
-                startActivity(i);
+                if(ColorBlindnessCalc.diagnosticHasBeenTaken(TitlePageActivity.this))
+                {
+                    Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
+                    i.putExtra("type", "camera");
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(TitlePageActivity.this, getResources().getString(R.string.missing_diagnostic_results), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -46,9 +54,16 @@ public class TitlePageActivity extends FragmentActivity {
         mPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
-                i.putExtra("type","gallery");
-                startActivity(i);
+                if(ColorBlindnessCalc.diagnosticHasBeenTaken(TitlePageActivity.this))
+                {
+                    Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
+                    i.putExtra("type", "gallery");
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(TitlePageActivity.this, getResources().getString(R.string.missing_diagnostic_results), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

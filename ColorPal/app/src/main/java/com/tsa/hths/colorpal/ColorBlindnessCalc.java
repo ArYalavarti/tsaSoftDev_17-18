@@ -19,6 +19,11 @@ public class ColorBlindnessCalc {
         int greenError = sp.getInt(context.getResources().getString(R.string.green_error), 0);
         int blueError = sp.getInt(context.getResources().getString(R.string.blue_error), 0);
 
+        if(redError + greenError + blueError == 0) // prevent division by 0 error
+        {
+            return NONE;
+        }
+
         double redPercent = 100.0 * redError / (redError + greenError + blueError);
         double greenPercent = 100.0 * greenError / (redError + greenError + blueError);
         double bluePercent = 100.0 * blueError / (redError + greenError + blueError);
@@ -49,6 +54,24 @@ public class ColorBlindnessCalc {
         else
         {
             return NONE;
+        }
+    }
+
+    public static boolean diagnosticHasBeenTaken(Context context)
+    {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        int redError = sp.getInt(context.getResources().getString(R.string.red_error), -1);
+        int greenError = sp.getInt(context.getResources().getString(R.string.green_error), -1);
+        int blueError = sp.getInt(context.getResources().getString(R.string.blue_error), -1);
+
+        if(redError == -1 || greenError == -1 || blueError == -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
