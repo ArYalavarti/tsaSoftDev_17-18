@@ -20,7 +20,7 @@
         android:maxWidth="250dp"
         android:maxHeight="250dp"
         android:id="@+id/app_logo"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo2"
         android:layout_gravity="center"
         app:srcCompat="@mipmap/ic_launcher" />
 

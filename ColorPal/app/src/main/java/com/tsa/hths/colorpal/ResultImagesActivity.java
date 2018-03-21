@@ -135,7 +135,7 @@ public class ResultImagesActivity extends FragmentActivity {
         Bitmap image = Bitmap.createScaledBitmap(originalImage, RESOLUTION, nh, true);
         if (filter) {
             ImageFilter filterer = new ImageFilter();
-            image = filterer.filterImage(image);
+            image = filterer.filterImage(image, ColorBlindnessCalc.getColorBlindness(this));
         }
         return image;
     }
