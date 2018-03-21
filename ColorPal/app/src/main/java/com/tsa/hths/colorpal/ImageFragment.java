@@ -22,12 +22,12 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_image, container, false);
-        ImageView  imageView = (ImageView) v.findViewById(R.id.result_image);
+        ImageView imageView = (ImageView) v.findViewById(R.id.result_image);
 
-        byte[] byteArray = getArguments().getByteArray("image");
-        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        byte[] byteArray = getArguments().getByteArray("image"); //get byte[] of image
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length); //decode byte[] to image
 
-        imageView.setImageBitmap(bmp);
+        imageView.setImageBitmap(bmp); //display image
 
         return v;
     }

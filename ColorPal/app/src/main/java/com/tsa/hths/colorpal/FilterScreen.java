@@ -17,9 +17,9 @@ public class FilterScreen extends AppCompatActivity {
         this.onBackPressed();
     }
 
-    private void toggleService(){
-        Intent intent=new Intent(this, OverlayService.class);
-        if(!stopService(intent)){
+    private void toggleService() {
+        Intent intent = new Intent(this, OverlayService.class);
+        if (!stopService(intent)) {
             if (android.os.Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {   //Android M Or Over
                 Intent i = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
                 startActivityForResult(i, 1);

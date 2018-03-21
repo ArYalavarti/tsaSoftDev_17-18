@@ -22,7 +22,7 @@ public class ImageFilter {
                     int b = Color.blue(colorInitial);
 
                     int colorOutput = Color.rgb(b, g, r);
-                    image.setPixel(x, y, colorOutput);;
+                    image.setPixel(x, y, colorOutput);
                 }
             }
         } else if (colorBlindnessType.equals("BLUE")) {
@@ -35,8 +35,8 @@ public class ImageFilter {
                     int g = Color.green(colorInitial);
                     int b = Color.blue(colorInitial);
 
-                    int colorOutput = Color.rgb(255-b, 255-g, 255-r);
-                    image.setPixel(x, y, colorOutput);;
+                    int colorOutput = Color.rgb(255 - b, 255 - g, 255 - r);
+                    image.setPixel(x, y, colorOutput);
                 }
             }
         }

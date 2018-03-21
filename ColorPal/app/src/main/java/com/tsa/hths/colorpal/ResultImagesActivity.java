@@ -29,7 +29,11 @@ import java.util.List;
 
 public class ResultImagesActivity extends FragmentActivity {
 
-    public final static int RESOLUTION = 200;
+    public final static int RESOLUTION = 200; //resolution of displayed images
+
+    private static final int REQUEST_CODE_SOME_FEATURES_PERMISSIONS = 101;
+    private static final int CAMERA_PIC_REQUEST = 000;
+    private static final int RESULT_LOAD_IMAGE = 111;
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -37,90 +41,46 @@ public class ResultImagesActivity extends FragmentActivity {
     private byte[] mOriginalImage;
     private byte[] mProcessedImage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_images);
 
-        getImages();
+        getImages(); //either from camera or gallery and display
 
 
     }
-
-    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment =null;
-            switch (position) {
-                case 0:
-
-                    Bundle args0 = new Bundle();
-                    args0.putByteArray("image",mOriginalImage);
-
-                    fragment = Fragment.instantiate(ResultImagesActivity.this, ImageFragment.class.getName(), args0);
-                    break;
-                case 1:
-
-                    Bundle args1 = new Bundle();
-                    args1.putByteArray("image",mProcessedImage);
-
-                    fragment = Fragment.instantiate(ResultImagesActivity.this, ImageFragment.class.getName(), args1);
-                    break; }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-    }
-
-    private static final int REQUEST_CODE_SOME_FEATURES_PERMISSIONS = 101;
-    private static final int CAMERA_PIC_REQUEST = 000;
-    private static final int RESULT_LOAD_IMAGE = 111;
 
     private void getImages() {
         String type = getIntent().getExtras().getString("type");
-        if (type.equals("camera")) {
+        if (type.equals("camera")) { //launch camera
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-        } else if (type.equals("gallery")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (type.equals("gallery")) { //select from gallery
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //get permissions to access gallery
                 int hasReadPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
 
-                List<String> permissions = new ArrayList<String>();
                 if (hasReadPermission != PackageManager.PERMISSION_GRANTED) {
-                    permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-                }
-
-                if (!permissions.isEmpty()) {
-                    requestPermissions(permissions.toArray(new String[permissions.size()]), REQUEST_CODE_SOME_FEATURES_PERMISSIONS);
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_SOME_FEATURES_PERMISSIONS);
                 }
             }
-            Intent intent = new Intent(Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, RESULT_LOAD_IMAGE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
+        if (data == null) { // return to TitlePageActivity if they do not take/select an image
             this.onBackPressed();
             return;
         }
         if (requestCode == CAMERA_PIC_REQUEST) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
-            processResults(image);
+            Bitmap image = (Bitmap) data.getExtras().get("data"); //get image
+            processResults(image); //filter and display image
         } else if (requestCode == RESULT_LOAD_IMAGE) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Uri selectedImage = data.getData(); //get image data
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -130,14 +90,14 @@ public class ResultImagesActivity extends FragmentActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            Bitmap image = BitmapFactory.decodeFile(picturePath);
-            processResults(image);
+            Bitmap image = BitmapFactory.decodeFile(picturePath); //get image
+            processResults(image); //filter and display image
         }
     }
 
     private Bitmap processImage(Bitmap originalImage, Boolean filter) {
-        int nh = (int) (originalImage.getHeight() * ( ((double) RESOLUTION) / originalImage.getWidth()));
-        Bitmap image = Bitmap.createScaledBitmap(originalImage, RESOLUTION, nh, true);
+        int nh = (int) (originalImage.getHeight() * (((double) RESOLUTION) / originalImage.getWidth()));
+        Bitmap image = Bitmap.createScaledBitmap(originalImage, RESOLUTION, nh, true); //lower image resolution
         if (filter) {
             ImageFilter filterer = new ImageFilter();
             image = filterer.filterImage(image, ColorBlindnessCalc.getColorBlindness(this));
@@ -145,7 +105,7 @@ public class ResultImagesActivity extends FragmentActivity {
         return image;
     }
 
-    private String RGBInterpreter (int pixel) {
+    private String RGBInterpreter(int pixel) {
         String trueColor = "";
 
         final double S_LOWER = 0.06;
@@ -167,15 +127,14 @@ public class ResultImagesActivity extends FragmentActivity {
         float sat = hsl[1];
         float light = hsl[2];
 
-        if (light>L_LOWER){
+        if (light > L_LOWER) {
 
-            if (light>L_HIGHER){
+            if (light > L_HIGHER) {
                 trueColor = "WHITE";
             } else {
-                if (sat<S_LOWER || (sat <S_MID && light < L_MID)){
+                if (sat < S_LOWER || (sat < S_MID && light < L_MID)) {
                     trueColor = "GRAY";
-                }
-                else {
+                } else {
 
                     if (hue >= 20 && hue < 50) {
                         trueColor = "ORANGE";
@@ -199,8 +158,6 @@ public class ResultImagesActivity extends FragmentActivity {
                         trueColor = "RED";
                     }
 
-
-
                 }
             }
 
@@ -213,26 +170,25 @@ public class ResultImagesActivity extends FragmentActivity {
 
     private void processResults(Bitmap image) {
         ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-        processImage(image, false).compress(Bitmap.CompressFormat.PNG, 100, stream1);
+        processImage(image, false).compress(Bitmap.CompressFormat.PNG, 100, stream1); //resize image and put in byte[]
         byte[] byteArray1 = stream1.toByteArray();
 
         ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
-        processImage(image, true).compress(Bitmap.CompressFormat.PNG, 100, stream2);
+        processImage(image, true).compress(Bitmap.CompressFormat.PNG, 100, stream2); //resize and filter image and put in byte[]
         byte[] byteArray2 = stream2.toByteArray();
 
-        mOriginalImage = byteArray1;
-        mProcessedImage = byteArray2;
+        mOriginalImage = byteArray1; //save original image to be used in fragment
+        mProcessedImage = byteArray2; //save filtered image to be used in fragment
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(1, true);
+        mPager.setAdapter(mPagerAdapter); //set screen to slider page
+        mPager.setCurrentItem(1, true); //launch on filtered image
 
         mPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
-                {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     float x = motionEvent.getX();
                     float y = motionEvent.getY();
 
@@ -240,45 +196,61 @@ public class ResultImagesActivity extends FragmentActivity {
                     mPager.buildDrawingCache();
 
                     Bitmap bitmap = mPager.getDrawingCache();
-                    int pixel = bitmap.getPixel(((int)x),((int)y));
+                    int pixel = bitmap.getPixel(((int) x), ((int) y));
                     String output;
-                    if (pixel!=0){
+                    if (pixel != 0) {
                         output = RGBInterpreter(pixel);
                     } else {
                         output = "WHITE";
                     }
 
-                    Toast.makeText(ResultImagesActivity.this, "True Color:" + output,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResultImagesActivity.this, "True Color:" + output, Toast.LENGTH_SHORT).show();
                     //(output[0]) + " " + output[1] + " " + output[2]
                     return true;
-                }
-                else
-                {
+                } else {
                     return false;
                 }
             }
         });
     }
 
-
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(ResultImagesActivity.this, TitlePageActivity.class));
+        startActivity(new Intent(ResultImagesActivity.this, TitlePageActivity.class)); //return to home page
+    }
+
+    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+            switch (position) {
+                case 0: //display original image on left page
+                    Bundle args0 = new Bundle();
+                    args0.putByteArray("image", mOriginalImage);
+
+                    fragment = Fragment.instantiate(ResultImagesActivity.this, ImageFragment.class.getName(), args0);
+                    break;
+                case 1: //display filtered image on right page
+                    Bundle args1 = new Bundle();
+                    args1.putByteArray("image", mProcessedImage);
+
+                    fragment = Fragment.instantiate(ResultImagesActivity.this, ImageFragment.class.getName(), args1);
+                    break;
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 }
-
-
-//    @Override
-//    public void onBackPressed() {
-//        if (mPager.getCurrentItem() == 0) {
-//            // If the user is currently looking at the first step, allow the system to handle the
-//            // Back button. This calls finish() on this activity and pops the back stack.
-//            super.onBackPressed();
-//        } else {
-//            // Otherwise, select the previous step.
-//            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-//        }
-//    }
 
 
 

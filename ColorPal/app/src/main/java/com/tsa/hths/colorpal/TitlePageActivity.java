@@ -21,9 +21,6 @@ public class TitlePageActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_page_layout);
 
-        //ImageView app_logo = (ImageView) findViewById(R.id.app_logo);
-        //app_logo.setImageResource(R.drawable.app_logo);
-
         mDiagnosticTestButton = (Button) findViewById(R.id.title_page_diagnostic_button);
         mDiagnosticTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,14 +34,11 @@ public class TitlePageActivity extends FragmentActivity {
         mCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ColorBlindnessCalc.diagnosticHasBeenTaken(TitlePageActivity.this))
-                {
+                if (ColorBlindnessCalc.diagnosticHasBeenTaken(TitlePageActivity.this)) {
                     Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
                     i.putExtra("type", "camera");
                     startActivity(i);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(TitlePageActivity.this, getResources().getString(R.string.missing_diagnostic_results), Toast.LENGTH_LONG).show();
                 }
             }
@@ -54,14 +48,11 @@ public class TitlePageActivity extends FragmentActivity {
         mPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ColorBlindnessCalc.diagnosticHasBeenTaken(TitlePageActivity.this))
-                {
+                if (ColorBlindnessCalc.diagnosticHasBeenTaken(TitlePageActivity.this)) {
                     Intent i = new Intent(TitlePageActivity.this, ResultImagesActivity.class);
                     i.putExtra("type", "gallery");
                     startActivity(i);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(TitlePageActivity.this, getResources().getString(R.string.missing_diagnostic_results), Toast.LENGTH_LONG).show();
                 }
             }
@@ -85,5 +76,6 @@ public class TitlePageActivity extends FragmentActivity {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+    }
 }

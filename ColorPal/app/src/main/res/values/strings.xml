@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ColorPal</string>
+    <string name="app_name">ChromaPal</string>
     <string name="diagButton">Take Diagnostic</string>
     <string name="imgAnalysis">Image Analysis</string>
     <string name="restitle">Results</string>
