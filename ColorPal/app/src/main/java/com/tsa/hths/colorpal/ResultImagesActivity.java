@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+import android.graphics.Color;
+import android.support.v4.graphics.ColorUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -143,6 +145,72 @@ public class ResultImagesActivity extends FragmentActivity {
         return image;
     }
 
+    private String RGBInterpreter (int pixel) {
+        String trueColor = "";
+
+        final double S_LOWER = 0.06;
+        final double S_MID = 0.09;
+
+        final double L_HIGHER = .97;
+        final double L_LOWER = .08;
+        final double L_MID = .35;
+
+
+        int r = Color.red(pixel);
+        int b = Color.blue(pixel);
+        int g = Color.green(pixel);
+
+        float[] hsl = new float[3];
+        ColorUtils.colorToHSL(pixel, hsl);
+
+        float hue = hsl[0];
+        float sat = hsl[1];
+        float light = hsl[2];
+
+        if (light>L_LOWER){
+
+            if (light>L_HIGHER){
+                trueColor = "WHITE";
+            } else {
+                if (sat<S_LOWER || (sat <S_MID && light < L_MID)){
+                    trueColor = "GRAY";
+                }
+                else {
+
+                    if (hue >= 20 && hue < 50) {
+                        trueColor = "ORANGE";
+                    } else if (hue >= 50 && hue < 70) {
+                        trueColor = "YELLOW";
+                    } else if (hue >= 70 && hue < 150) {
+                        trueColor = "GREEN";
+                    } else if (hue >= 150 && hue < 170) {
+                        trueColor = "TEAL";
+                    } else if (hue >= 170 && hue < 220) {
+                        trueColor = "BLUE";
+                    } else if (hue >= 220 && hue < 265) {
+                        trueColor = "PURPLE";
+                    } else if (hue >= 265 && hue < 285) {
+                        trueColor = "MAGENTA";
+                    } else if (hue >= 285 && hue < 335) {
+                        trueColor = "PINK";
+                    } else if (hue >= 335 && hue < 356) {
+                        trueColor = "CORAL";
+                    } else {
+                        trueColor = "RED";
+                    }
+
+
+
+                }
+            }
+
+        } else {
+            trueColor = "BLACK";
+        }
+
+        return (trueColor);
+    }
+
     private void processResults(Bitmap image) {
         ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
         processImage(image, false).compress(Bitmap.CompressFormat.PNG, 100, stream1);
@@ -158,7 +226,7 @@ public class ResultImagesActivity extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(1);
+        mPager.setCurrentItem(1, true);
 
         mPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -168,8 +236,20 @@ public class ResultImagesActivity extends FragmentActivity {
                     float x = motionEvent.getX();
                     float y = motionEvent.getY();
 
-                    Toast.makeText(ResultImagesActivity.this, "" + x + ","+ y,Toast.LENGTH_LONG).show();
+                    mPager.setDrawingCacheEnabled(true);
+                    mPager.buildDrawingCache();
 
+                    Bitmap bitmap = mPager.getDrawingCache();
+                    int pixel = bitmap.getPixel(((int)x),((int)y));
+                    String output;
+                    if (pixel!=0){
+                        output = RGBInterpreter(pixel);
+                    } else {
+                        output = "WHITE";
+                    }
+
+                    Toast.makeText(ResultImagesActivity.this, "True Color:" + output,Toast.LENGTH_SHORT).show();
+                    //(output[0]) + " " + output[1] + " " + output[2]
                     return true;
                 }
                 else
@@ -179,6 +259,7 @@ public class ResultImagesActivity extends FragmentActivity {
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {
