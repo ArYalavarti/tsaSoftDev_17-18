@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -184,6 +185,9 @@ public class ResultImagesActivity extends AppCompatActivity {
         mPager.setAdapter(mPagerAdapter); //set screen to slider page
         mPager.setCurrentItem(1, true); //launch on filtered image
 
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(mPager);
+
         mPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -247,6 +251,12 @@ public class ResultImagesActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String[] titles = new String[]{"Original", "Filtered"};
+            return titles[position];
         }
     }
 }
