@@ -191,6 +191,24 @@ public class ResultImagesActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //In case the user never tapped on the original image, build the cache for the original image
+                mPager.setDrawingCacheEnabled(true);
+                mPager.buildDrawingCache();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         mPager.setOnTouchListener(new View.OnTouchListener() {
             @Override

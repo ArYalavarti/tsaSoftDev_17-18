@@ -19,7 +19,7 @@ public class ColorBlindnessCalc {
         int greenError = sp.getInt(context.getResources().getString(R.string.green_error), 0);
         int blueError = sp.getInt(context.getResources().getString(R.string.blue_error), 0);
 
-        if(redError + greenError + blueError == 0) // prevent division by 0 error
+        if(redError + greenError + blueError <= 100) // accounts for low errors and prevents division by 0 error
         {
             return NONE;
         }
@@ -30,14 +30,7 @@ public class ColorBlindnessCalc {
 
         if(isBetween(redPercent, 28, 38) && isBetween(greenPercent, 28, 38) && isBetween(bluePercent, 28, 38))
         {
-            if(redError + greenError + blueError > 700)
-            {
-                return FULL;
-            }
-            else
-            {
-                return NONE;
-            }
+            return FULL;
         }
         else if(redPercent >= bluePercent && redPercent >= greenPercent)
         {

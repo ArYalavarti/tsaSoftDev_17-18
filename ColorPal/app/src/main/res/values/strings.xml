@@ -23,11 +23,12 @@
         you which color filter you should apply.
 
         \n\nPress the “Camera” button and take a picture of the real world.  The app will automatically apply the appropriate
-        color filter.  Swipe left and right to view the original image or the color-filtered image.
+        color filter.  Swipe left and right to view the original image or the color-filtered image. Tap anywhere on the image
+        to get the true color at that location.
 
         \n\nPress the “Photos” button to browse through images currently on your phone.  Once an image is selected, the app
         will automatically apply the appropriate color filter.  Swipe left and right to view the original image or the
-        color-filtered image.
+        color-filtered image. Tap anywhere on the image to get the true color at that location.
     </string>
 
     <string name="diagnostic_test_instructions">

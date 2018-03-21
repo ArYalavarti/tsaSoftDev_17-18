@@ -77,4 +77,10 @@ public class DiagnosticResultsActivity extends AppCompatActivity {
         //out += ("\nR: " + redPercent + "%, G: " + greenPercent + "%, B: " + bluePercent + "%");
         return out;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, TitlePageActivity.class);
+        startActivity(i);
+    }
 }
