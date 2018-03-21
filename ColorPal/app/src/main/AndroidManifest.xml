@@ -31,7 +31,15 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ResultImagesActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ResultImagesActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".TitlePageActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.myfirstapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

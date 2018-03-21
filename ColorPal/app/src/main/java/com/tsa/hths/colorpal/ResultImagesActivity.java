@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,10 +25,8 @@ import android.graphics.Color;
 import android.support.v4.graphics.ColorUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ResultImagesActivity extends FragmentActivity {
+public class ResultImagesActivity extends AppCompatActivity {
 
     public final static int RESOLUTION = 200; //resolution of displayed images
 
