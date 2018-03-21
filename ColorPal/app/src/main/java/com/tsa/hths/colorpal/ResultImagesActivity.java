@@ -11,14 +11,15 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -38,8 +39,10 @@ public class ResultImagesActivity extends AppCompatActivity {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 
-    private byte[] mOriginalImage;
-    private byte[] mProcessedImage;
+    private Bitmap mProcessedImage;
+
+    private byte[] mOriginalImageByteArray;
+    private byte[] mProcessedImageByteArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,11 +177,12 @@ public class ResultImagesActivity extends AppCompatActivity {
         byte[] byteArray1 = stream1.toByteArray();
 
         ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
-        processImage(image, true).compress(Bitmap.CompressFormat.PNG, 100, stream2); //resize and filter image and put in byte[]
+        mProcessedImage = processImage(image, true);
+        mProcessedImage.compress(Bitmap.CompressFormat.PNG, 100, stream2); //resize and filter image and put in byte[]
         byte[] byteArray2 = stream2.toByteArray();
 
-        mOriginalImage = byteArray1; //save original image to be used in fragment
-        mProcessedImage = byteArray2; //save filtered image to be used in fragment
+        mOriginalImageByteArray = byteArray1; //save original image to be used in fragment
+        mProcessedImageByteArray = byteArray2; //save filtered image to be used in fragment
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -222,6 +226,38 @@ public class ResultImagesActivity extends AppCompatActivity {
         startActivity(new Intent(ResultImagesActivity.this, TitlePageActivity.class)); //return to home page
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_result_images, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //get permissions to write to storage
+                    int hasReadPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                    if (hasReadPermission != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_SOME_FEATURES_PERMISSIONS);
+                    }
+                }
+
+                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), mProcessedImage,null, null);
+                Uri bitmapUri = Uri.parse(bitmapPath);
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                startActivity(Intent.createChooser(intent, "Share"));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -234,13 +270,13 @@ public class ResultImagesActivity extends AppCompatActivity {
             switch (position) {
                 case 0: //display original image on left page
                     Bundle args0 = new Bundle();
-                    args0.putByteArray("image", mOriginalImage);
+                    args0.putByteArray("image", mOriginalImageByteArray);
 
                     fragment = Fragment.instantiate(ResultImagesActivity.this, ImageFragment.class.getName(), args0);
                     break;
                 case 1: //display filtered image on right page
                     Bundle args1 = new Bundle();
-                    args1.putByteArray("image", mProcessedImage);
+                    args1.putByteArray("image", mProcessedImageByteArray);
 
                     fragment = Fragment.instantiate(ResultImagesActivity.this, ImageFragment.class.getName(), args1);
                     break;
