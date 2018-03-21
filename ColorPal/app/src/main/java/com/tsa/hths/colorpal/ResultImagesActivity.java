@@ -10,13 +10,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,7 +35,9 @@ public class ResultImagesActivity extends AppCompatActivity {
 
     public final static int RESOLUTION = 200; //resolution of displayed images
 
-    private static final int REQUEST_CODE_SOME_FEATURES_PERMISSIONS = 101;
+    private static final int REQUEST_CODE_READ = 101;
+    private static final int REQUEST_CODE_WRITE = 010;
+
     private static final int CAMERA_PIC_REQUEST = 000;
     private static final int RESULT_LOAD_IMAGE = 111;
 
@@ -60,28 +65,25 @@ public class ResultImagesActivity extends AppCompatActivity {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
         } else if (type.equals("gallery")) { //select from gallery
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //get permissions to access gallery
-                int hasReadPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-
-                if (hasReadPermission != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_SOME_FEATURES_PERMISSIONS);
-                }
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    && (ContextCompat.checkSelfPermission(ResultImagesActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED)) {
+                ActivityCompat.requestPermissions(ResultImagesActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_CODE_READ);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, RESULT_LOAD_IMAGE);
             }
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, RESULT_LOAD_IMAGE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) { // return to TitlePageActivity if they do not take/select an image
-            this.onBackPressed();
-            return;
-        }
-        if (requestCode == CAMERA_PIC_REQUEST) {
+        if (requestCode == CAMERA_PIC_REQUEST && data.getExtras() != null) {
             Bitmap image = (Bitmap) data.getExtras().get("data"); //get image
             processResults(image); //filter and display image
-        } else if (requestCode == RESULT_LOAD_IMAGE) {
+        } else if (requestCode == RESULT_LOAD_IMAGE && data != null) {
             Uri selectedImage = data.getData(); //get image data
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -95,6 +97,8 @@ public class ResultImagesActivity extends AppCompatActivity {
 
             Bitmap image = BitmapFactory.decodeFile(picturePath); //get image
             processResults(image); //filter and display image
+        } else {
+            this.onBackPressed();
         }
     }
 
@@ -226,35 +230,63 @@ public class ResultImagesActivity extends AppCompatActivity {
         startActivity(new Intent(ResultImagesActivity.this, TitlePageActivity.class)); //return to home page
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_result_images, menu);
         return true;
     }
 
+    private void shareImage() {
+        String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), mProcessedImage, null, null);
+        Uri bitmapUri = Uri.parse(bitmapPath);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+        startActivity(Intent.createChooser(intent, "Share"));
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //get permissions to write to storage
-                    int hasReadPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                    if (hasReadPermission != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_SOME_FEATURES_PERMISSIONS);
-                    }
+                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        && (ContextCompat.checkSelfPermission(ResultImagesActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED)) {
+                    ActivityCompat.requestPermissions(ResultImagesActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE_WRITE);
+                } else {
+                    shareImage();
                 }
-
-                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), mProcessedImage,null, null);
-                Uri bitmapUri = Uri.parse(bitmapPath);
-
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
-                startActivity(Intent.createChooser(intent, "Share"));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_READ: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, RESULT_LOAD_IMAGE);
+                } else {
+                    startActivity(new Intent(ResultImagesActivity.this, TitlePageActivity.class));
+                }
+                return;
+            }
+            case REQUEST_CODE_WRITE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    shareImage();
+                }
+                return;
         }
     }
 
