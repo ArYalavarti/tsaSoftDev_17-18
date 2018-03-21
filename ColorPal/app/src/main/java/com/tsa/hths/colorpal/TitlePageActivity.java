@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class TitlePageActivity extends AppCompatActivity { //change to FragmentActivity for no ActionBar
+public class TitlePageActivity extends FragmentActivity { //change to FragmentActivity for no ActionBar
 
     private Button mDiagnosticTestButton;
     private Button mCamera;
