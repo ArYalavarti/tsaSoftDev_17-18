@@ -187,7 +187,7 @@ public class ResultImagesActivity extends AppCompatActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter); //set screen to slider page
-        mPager.setCurrentItem(1, true); //launch on filtered image
+        mPager.setCurrentItem(0, true); //launch on original image
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mPager);
