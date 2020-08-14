@@ -15,3 +15,6 @@ While your phone is connected to your computer, identify your phone's memory dri
 
 ## Using our mobile app
 We have instructions within the application, so just follow those while using our app. Have fun exploring color in a whole new way!
+
+## Note
+2nd Place TSA National Conference Software Development
